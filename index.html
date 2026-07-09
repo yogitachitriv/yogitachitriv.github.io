@@ -1,701 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Yogita Chitriv (Dubey)</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            line-height: 1.7;
-            color: #2c3e50;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
-            min-height: 100vh;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 1rem 0;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            padding: 0 1rem;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #3498db;
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #3498db;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 6rem 2rem 2rem;
-        }
-
-        header {
-            text-align: center;
-            padding: 3rem 0;
-            margin-bottom: 3rem;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12);
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .title {
-            font-size: 1.3rem;
-            color: #7f8c8d;
-            margin-bottom: 0.3rem;
-            font-style: italic;
-        }
-
-        .affiliation {
-            font-size: 1.1rem;
-            color: #95a5a6;
-            margin-bottom: 1rem;
-        }
-
-        .badges {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        section {
-            background: white;
-            padding: 2.5rem;
-            margin-bottom: 2.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 3px solid #3498db;
-            position: relative;
-        }
-
-        h2::before {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: #2ecc71;
-        }
-
-        .bio-text {
-            font-size: 1.05rem;
-            line-height: 1.9;
-            color: #34495e;
-            text-align: justify;
-        }
-
-        .publication, .project, .talk, .course {
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #3498db;
-            transition: all 0.3s ease;
-        }
-
-        .publication:hover, .project:hover, .talk:hover, .course:hover {
-            background: #e8f4f8;
-            border-left-color: #2ecc71;
-            transform: translateX(5px);
-        }
-
-        .publication h3, .project h3, .talk h3, .course h3 {
-            color: #2c3e50;
-            font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .authors {
-            color: #7f8c8d;
-            font-style: italic;
-            margin-bottom: 0.5rem;
-        }
-
-        .venue {
-            color: #95a5a6;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .description {
-            color: #34495e;
-            margin-top: 0.5rem;
-            line-height: 1.6;
-        }
-
-        .links {
-            margin-top: 1rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .links a {
-            color: #3498db;
-            text-decoration: none;
-            padding: 0.4rem 1rem;
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .links a:hover {
-            background: #3498db;
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .education-item {
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .education-item:last-child {
-            border-bottom: none;
-        }
-
-        .degree {
-            font-size: 1.3rem;
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .institution {
-            color: #7f8c8d;
-            font-size: 1.05rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .year {
-            color: #95a5a6;
-            font-style: italic;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover {
-            background: #e8f4f8;
-            transform: translateY(-3px);
-        }
-
-        .contact-icon {
-            font-size: 1.5rem;
-        }
-
-        .contact-item a {
-            color: #3498db;
-            text-decoration: none;
-            word-break: break-all;
-        }
-
-        .contact-item a:hover {
-            text-decoration: underline;
-        }
-
-        .loading {
-            text-align: center;
-            color: #7f8c8d;
-            font-style: italic;
-            padding: 2rem;
-        }
-
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-
-        .file-upload {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 2px dashed #3498db;
-        }
-
-        .file-upload h3 {
-            margin-bottom: 1rem;
-            color: #2c3e50;
-        }
-
-        .file-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .file-input-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .file-input-item label {
-            min-width: 120px;
-            font-weight: 500;
-            color: #34495e;
-        }
-
-        .file-input-item input[type="file"] {
-            flex: 1;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .title {
-                font-size: 1.1rem;
-            }
-
-            nav ul {
-                gap: 1rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            .container {
-                padding: 5rem 1rem 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Yogita Chitriv (Dubey) — Academic Portfolio</title>
+<meta name="description" content="Academic portfolio of Dr. Yogita Chitriv (Dubey), Associate Professor, Department of Electronics and Telecommunication, YCCE Nagpur.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="#bio">Bio</a></li>
-            <li><a href="#publications">Publications</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#teaching">Teaching</a></li>
-            <li><a href="#talks">Talks</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
 
-    <div class="container">
-        <header>
-            <h1>Dr. Sarah Mitchell</h1>
-            <div class="title">Associate Professor of Computer Science</div>
-            <div class="affiliation">University of Technology</div>
-            <div class="badges">
-                <span class="badge">Machine Learning</span>
-                <span class="badge">Artificial Intelligence</span>
-                <span class="badge">Data Science</span>
-            </div>
-        </header>
+<div class="wrap">
 
-        <section id="bio">
-            <h2>Biography</h2>
-            <p class="bio-text">
-                Dr. Sarah Mitchell is an Associate Professor in the Department of Computer Science at the University of Technology, where she leads the Intelligent Systems Research Group. Her research focuses on developing novel machine learning algorithms for real-world applications, with particular emphasis on interpretable AI and ethical considerations in automated decision-making systems. She has published over 40 peer-reviewed papers in top-tier conferences and journals, and her work has been recognized with several awards including the Best Paper Award at NeurIPS 2023. Dr. Mitchell is passionate about bridging the gap between theoretical advances and practical implementations, and she actively collaborates with industry partners to ensure her research has tangible societal impact.
-            </p>
-        </section>
+  <!-- HEADER -->
+  <header class="hero">
+    <div class="hero-photo">
+      <img src="assets/profile.jpg" alt="Portrait of Dr. Yogita Chitriv (Dubey)" onerror="this.style.display='none'">
+    </div>
+    <div class="hero-text">
+      <h1>Yogita Chitriv (Dubey)<span class="degree">, Ph.D.</span></h1>
+      <p class="role">Associate Professor, Department of Electronics &amp; Telecommunication<br>
+      Yeshwantrao Chavan College of Engineering, Nagpur</p>
+      <p class="contact">
+        <a href="mailto:yogeetakdubey@yahoo.co.in">yogeetakdubey@yahoo.co.in</a>
+        &nbsp;·&nbsp;
+        <a href="https://linkedin.com/in/dr-yogita-chitriv-dubey" target="_blank" rel="noopener">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="publications.bib" download>Download BibTeX</a>
+      </p>
+    </div>
+  </header>
 
-        <section>
-            <div class="file-upload">
-                <h3>Load Data Files</h3>
-                <div class="file-input-group">
-                    <div class="file-input-item">
-                        <label for="publicationsFile">Publications:</label>
-                        <input type="file" id="publicationsFile" accept=".yaml,.yml">
-                    </div>
-                    <div class="file-input-item">
-                        <label for="projectsFile">Projects:</label>
-                        <input type="file" id="projectsFile" accept=".yaml,.yml">
-                    </div>
-                    <div class="file-input-item">
-                        <label for="talksFile">Talks:</label>
-                        <input type="file" id="talksFile" accept=".yaml,.yml">
-                    </div>
-                </div>
-            </div>
-        </section>
+  <nav class="topnav">
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#funding">Funding</a>
+    <a href="#ip">Patents &amp; IP</a>
+    <a href="#students">Students</a>
+    <a href="#service">Service</a>
+  </nav>
 
-        <section id="publications">
-            <h2>Publications</h2>
-            <div id="publications-container">
-                <div class="loading">Upload publications.yaml file to load publications</div>
-            </div>
-        </section>
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      I am an Associate Professor in the Department of Electronics and Telecommunication at
+      Yeshwantrao Chavan College of Engineering (YCCE), Nagpur, where I have taught and mentored
+      students since 2006. I earned my Ph.D. in Electronics from RTM Nagpur University in 2017, with a
+      thesis on algorithms for the quantitative analysis and assessment of brain images.
+    </p>
+    <p>
+      My research spans <strong>explainable AI, medical image analysis, and machine learning
+      applications in healthcare</strong> — including brain MRI segmentation and tumor detection,
+      liver and cardiac disease classification, and agricultural and engineering applications of ML.
+      I have secured external research funding from CSIR-ASPIRE, AICTE-RPS, DST-FIST, and a
+      collaboration with Harvard University funded by USAID.
+    </p>
+  </section>
 
-        <section id="projects">
-            <h2>Research Projects</h2>
-            <div id="projects-container">
-                <div class="loading">Upload projects.yaml file to load projects</div>
-            </div>
-        </section>
+  <!-- RESEARCH -->
+  <section id="research">
+    <h2>Research Interests</h2>
+    <ul class="chip-list">
+      <li>Explainable AI (XAI)</li>
+      <li>Medical Image Processing</li>
+      <li>Brain MRI Segmentation</li>
+      <li>Machine &amp; Deep Learning</li>
+      <li>Fuzzy Clustering</li>
+      <li>Biomedical Signal Processing</li>
+      <li>Computer Vision</li>
+    </ul>
+  </section>
 
-        <section id="teaching">
-            <h2>Teaching</h2>
-            
-            <div class="course">
-                <h3>CS 401: Machine Learning Fundamentals</h3>
-                <p>Introduction to supervised and unsupervised learning, covering classical algorithms and modern deep learning approaches. Fall 2024.</p>
-            </div>
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <h2>Publications</h2>
+    <p class="section-note">Loaded dynamically from <a href="publications.bib">publications.bib</a> and formatted in APA style. My name is <b>bolded</b> in each citation.</p>
 
-            <div class="course">
-                <h3>CS 601: Advanced Topics in AI Ethics</h3>
-                <p>Graduate seminar exploring ethical implications of AI systems, fairness metrics, and responsible AI development. Spring 2024.</p>
-            </div>
-
-            <div class="course">
-                <h3>CS 501: Deep Learning and Neural Networks</h3>
-                <p>Comprehensive coverage of neural network architectures, optimization techniques, and applications in computer vision and NLP. Fall 2023.</p>
-            </div>
-        </section>
-
-        <section id="talks">
-            <h2>Invited Talks</h2>
-            <div id="talks-container">
-                <div class="loading">Upload talks.yaml file to load talks</div>
-            </div>
-        </section>
-
-        <section id="education">
-            <h2>Education</h2>
-            
-            <div class="education-item">
-                <div class="degree">Ph.D. in Computer Science</div>
-                <div class="institution">Stanford University</div>
-                <div class="year">2018</div>
-            </div>
-
-            <div class="education-item">
-                <div class="degree">M.S. in Computer Science</div>
-                <div class="institution">Carnegie Mellon University</div>
-                <div class="year">2013</div>
-            </div>
-
-            <div class="education-item">
-                <div class="degree">B.S. in Computer Engineering</div>
-                <div class="institution">University of California, Berkeley</div>
-                <div class="year">2011</div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <span class="contact-icon">📧</span>
-                    <div>
-                        <strong>Email:</strong><br>
-                        <a href="mailto:s.mitchell@university.edu">s.mitchell@university.edu</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">🏢</span>
-                    <div>
-                        <strong>Office:</strong><br>
-                        Room 342, Computer Science Building
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">🔗</span>
-                    <div>
-                        <strong>LinkedIn:</strong><br>
-                        <a href="#">linkedin.com/in/sarahmitchell</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">📚</span>
-                    <div>
-                        <strong>Google Scholar:</strong><br>
-                        <a href="#">View Profile</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">💻</span>
-                    <div>
-                        <strong>GitHub:</strong><br>
-                        <a href="#">github.com/drsarahmitchell</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">🐦</span>
-                    <div>
-                        <strong>Twitter:</strong><br>
-                        <a href="#">@DrSarahMitchell</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="pub-filters">
+      <button class="filter-btn active" data-type="all">All</button>
+      <button class="filter-btn" data-type="article">Journal Articles</button>
+      <button class="filter-btn" data-type="inproceedings">Conference Papers</button>
+      <button class="filter-btn" data-type="incollection">Books &amp; Chapters</button>
     </div>
 
-    <script>
-        function renderPublications(data) {
-            const container = document.getElementById('publications-container');
-            container.innerHTML = '';
+    <ol id="pub-list" class="pub-list"></ol>
+  </section>
 
-            if (!data || !Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div class="error">No publications found in the YAML file</div>';
-                return;
-            }
+  <!-- FUNDING -->
+  <section id="funding">
+    <h2>Research Funding</h2>
+    <ul class="record-list">
+      <li>
+        <div class="record-year">2024–2027</div>
+        <div class="record-body">
+          <strong>Personalized E-Support System for Early Detection of Breast Cancer using Machine Learning and Deep Learning with Mobile Application</strong>
+          — CSIR-ASPIRE · ₹22.6 Lacs · Sanction No. 22WS(0020)/2023-24/EMR-II/ASPIRE
+        </div>
+      </li>
+      <li>
+        <div class="record-year">2015–2018</div>
+        <div class="record-body">
+          <strong>Design of Embedded System for Quantitative Analysis and Assessment of Brain Images</strong>
+          — AICTE-RPS · ₹4.67 Lacs · Sanction No. 8-177/RFID/RPS/POLICY-1/2014-15
+        </div>
+      </li>
+      <li>
+        <div class="record-year">2015–2016</div>
+        <div class="record-body">
+          <strong>Rapid Diagnosis of Frail and Sick Newborns with Handheld Vital Sign Monitor</strong>
+          — in collaboration with Harvard University, funded by USAID, USA · $40,000 · Sanction No. AID-OAA-14-00005
+        </div>
+      </li>
+      <li>
+        <div class="record-year">2015–2016</div>
+        <div class="record-body">
+          <strong>FIST (Advanced Communication Lab)</strong>
+          — DST-FIST · ₹7.91 Lacs · Sanction No. SR/FST/College-150/2013
+        </div>
+      </li>
+    </ul>
+  </section>
 
-            data.forEach(pub => {
-                const div = document.createElement('div');
-                div.className = 'publication';
-                
-                let html = `<h3>${pub.title || 'Untitled'}</h3>`;
-                
-                if (pub.authors) {
-                    html += `<div class="authors">${pub.authors}</div>`;
-                }
-                
-                if (pub.venue) {
-                    html += `<div class="venue">${pub.venue}</div>`;
-                }
+  <!-- IP -->
+  <section id="ip">
+    <h2>Patents &amp; Intellectual Property</h2>
+    <h3>Patents</h3>
+    <ul class="record-list">
+      <li><div class="record-year">2025</div><div class="record-body">"An Engine Oil Health Monitoring System" — Indian Patent Office, June 2025.</div></li>
+      <li><div class="record-year">2022</div><div class="record-body">"A System for Boundary Indication in Cricket" — Indian Patent Office, December 2022.</div></li>
+      <li><div class="record-year">2021</div><div class="record-body">"A System and Method for Controlling Traffic Signals and Density" — Australian Innovation Patent, October 2021.</div></li>
+      <li><div class="record-year">2021</div><div class="record-body">"A System and Method for Facilitating Energy Saving" — Australian Innovation Patent, October 2021.</div></li>
+    </ul>
+    <h3>Copyrights</h3>
+    <ul class="record-list compact">
+      <li><div class="record-body">"Development of Algorithm for Tumor Detection and Classification in Brain MR Images" — L-78108/2018</div></li>
+      <li><div class="record-body">"Face and Voice Recognition Based Security System" — L-73384/2018</div></li>
+      <li><div class="record-body">"Monitoring Attendance by Face Detection" — L-66339/2017</div></li>
+      <li><div class="record-body">"Development of Algorithms for Cotton Leaf Diseases Detection and Classification" — L-71293/2017</div></li>
+      <li><div class="record-body">"Funding Scheme" — L-91097/2020</div></li>
+      <li><div class="record-body">"A Laboratory Manual on Principles of Image Processing Laboratory" — L-112078/2022</div></li>
+    </ul>
+  </section>
 
-                if (pub.year) {
-                    html += `<div class="year">Year: ${pub.year}</div>`;
-                }
-                
-                if (pub.links && Object.keys(pub.links).length > 0) {
-                    html += '<div class="links">';
-                    for (const [key, url] of Object.entries(pub.links)) {
-                        html += `<a href="${url}" target="_blank">${key}</a>`;
-                    }
-                    html += '</div>';
-                }
-                
-                div.innerHTML = html;
-                container.appendChild(div);
-            });
-        }
+  <!-- STUDENTS -->
+  <section id="students">
+    <h2>Student Guidance</h2>
 
-        function renderProjects(data) {
-            const container = document.getElementById('projects-container');
-            container.innerHTML = '';
+    <h3>Ph.D. Scholars</h3>
+    <ul class="record-list">
+      <li><div class="record-year">2024</div><div class="record-body"><strong>Amit Bhoyar</strong> — Advanced Fault Tolerance Analysis and Design of Reconfigurable On-board Data Handling System for Space Application (reg. 29/02/2024)</div></li>
+      <li><div class="record-year">2024</div><div class="record-body"><strong>Prachi Gawande</strong> — Secured Learning Framework for Wearable Device in Healthcare Applications (reg. 26/02/2024)</div></li>
+      <li><div class="record-year">2023</div><div class="record-body"><strong>Bhupendra Deshmukh</strong> — Crop Leaves Chlorophyll Estimation and Predictive Analysis using Machine Learning (reg. 18/09/2023)</div></li>
+    </ul>
 
-            if (!data || !Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div class="error">No projects found in the YAML file</div>';
-                return;
-            }
+    <h3>PG / UG Guidance</h3>
+    <p class="section-note">40+ postgraduate and undergraduate projects guided since 2009, spanning medical image analysis, IoT, computer vision, and machine learning applications. Full list available on request.</p>
+  </section>
 
-            data.forEach(proj => {
-                const div = document.createElement('div');
-                div.className = 'project';
-                
-                let html = `<h3>${proj.title || 'Untitled Project'}</h3>`;
-                
-                if (proj.description) {
-                    html += `<p class="description">${proj.description}</p>`;
-                }
+  <!-- SERVICE -->
+  <section id="service">
+    <h2>Awards, Certifications &amp; Service</h2>
 
-                if (proj.duration) {
-                    html += `<div class="venue">Duration: ${proj.duration}</div>`;
-                }
+    <h3>Awards</h3>
+    <ul class="record-list">
+      <li><div class="record-year">2018</div><div class="record-body">1st Prize, "Shakti — A Complete App for Women," International Humanitarian Technology Project Competition, IEEE WIE International Leadership Summit, Dhaka, Bangladesh.</div></li>
+      <li><div class="record-year">2013</div><div class="record-body">Scholarship of €1000, Marie Curie Initial Training Network (MIBISOC FP7-PEOPLE-ITN-2008), Université Libre de Bruxelles, Belgium.</div></li>
+      <li><div class="record-year">2018</div><div class="record-body">Travel Grant from IEEE for the Humanitarian Technology Conference, Colombo, Sri Lanka.</div></li>
+    </ul>
 
-                if (proj.funding) {
-                    html += `<div class="venue">Funding: ${proj.funding}</div>`;
-                }
-                
-                if (proj.links && Object.keys(proj.links).length > 0) {
-                    html += '<div class="links">';
-                    for (const [key, url] of Object.entries(proj.links)) {
-                        html += `<a href="${url}" target="_blank">${key}</a>`;
-                    }
-                    html += '</div>';
-                }
-                
-                div.innerHTML = html;
-                container.appendChild(div);
-            });
-        }
+    <h3>Selected Certifications</h3>
+    <ul class="record-list compact">
+      <li><div class="record-body">Gold Medal (91%, top 1%) — NPTEL "Digital Image Processing," IIT Kharagpur, 2018</div></li>
+      <li><div class="record-body">Silver Medal (84%) — NPTEL "Deep Learning," IIT Ropar, 2023</div></li>
+      <li><div class="record-body">Silver Medal (85%) — NPTEL "Deep Learning for Visual Computing," IIT Kharagpur, 2020</div></li>
+      <li><div class="record-body">Silver Medal (89%) — NPTEL "Joy of Computing Using Python," IIT Ropar, 2020</div></li>
+    </ul>
 
-        function renderTalks(data) {
-            const container = document.getElementById('talks-container');
-            container.innerHTML = '';
+    <h3>Skills</h3>
+    <ul class="chip-list">
+      <li>Python</li><li>MATLAB</li><li>LaTeX</li><li>English</li><li>Marathi</li><li>Hindi</li>
+    </ul>
+  </section>
 
-            if (!data || !Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div class="error">No talks found in the YAML file</div>';
-                return;
-            }
+  <footer>
+    <p>Dr. Yogita Chitriv (Dubey) · Department of Electronics &amp; Telecommunication, YCCE Nagpur</p>
+    <p class="muted">Built with plain HTML/CSS/JS · Publications rendered from BibTeX</p>
+  </footer>
 
-            data.forEach(talk => {
-                const div = document.createElement('div');
-                div.className = 'talk';
-                
-                let html = `<h3>${talk.title || 'Untitled Talk'}</h3>`;
-                
-                if (talk.venue) {
-                    html += `<div class="venue">${talk.venue}</div>`;
-                }
+</div>
 
-                if (talk.date) {
-                    html += `<div class="venue">Date: ${talk.date}</div>`;
-                }
-
-                if (talk.location) {
-                    html += `<div class="venue">Location: ${talk.location}</div>`;
-                }
-
-                if (talk.description) {
-                    html += `<p class="description">${talk.description}</p>`;
-                }
-                
-                if (talk.links && Object.keys(talk.links).length > 0) {
-                    html += '<div class="links">';
-                    for (const [key, url] of Object.entries(talk.links)) {
-                        html += `<a href="${url}" target="_blank">${key}</a>`;
-                    }
-                    html += '</div>';
-                }
-                
-                div.innerHTML = html;
-                container.appendChild(div);
-            });
-        }
-
-        function loadYAMLFile(file, renderFunction, containerName) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = jsyaml.load(e.target.result);
-                    renderFunction(data);
-                } catch (error) {
-                    const container = document.getElementById(containerName);
-                    container.innerHTML = `<div class="error">Error parsing YAML: ${error.message}</div>`;
-                }
-            };
-            reader.onerror = function() {
-                const container = document.getElementById(containerName);
-                container.innerHTML = '<div class="error">Error reading file</div>';
-            };
-            reader.readAsText(file);
-        }
-
-        document.getElementById('publicationsFile').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                loadYAMLFile(e.target.files[0], renderPublications, 'publications-container');
-            }
-        });
-
-        document.getElementById('projectsFile').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                loadYAMLFile(e.target.files[0], renderProjects, 'projects-container');
-            }
-        });
-
-        document.getElementById('talksFile').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                loadYAMLFile(e.target.files[0], renderTalks, 'talks-container');
-            }
-        });
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
