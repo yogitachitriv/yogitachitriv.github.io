@@ -67,9 +67,39 @@ function parseFields(body) {
 }
 
 /* ---------- Author formatting ---------- */
-// Converts "\b{Y. Dubey}" markers into <b> tags, keeps rest as text
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isTargetAuthor(author) {
+  const normalized = author
+    .replace(/\\b\{([^}]*)\}/g, '$1')
+    .replace(/[.,]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+
+  const tokens = normalized.split(' ').filter(Boolean);
+  if (!tokens.includes('dubey')) return false;
+  if (tokens.includes('yogita')) return true;
+  if (tokens.includes('y')) return true;
+  return false;
+}
+
 function renderBoldMarkup(str) {
-  return str.replace(/\\b\{([^}]*)\}/g, '<b>$1</b>');
+  const escaped = escapeHtml(str);
+  if (/\\b\{[^}]*\}/.test(str)) {
+    return escaped.replace(/\\b\{([^}]*)\}/g, '<b>$1</b>');
+  }
+  if (isTargetAuthor(str)) {
+    return `<b>${escaped}</b>`;
+  }
+  return escaped;
 }
 
 function formatAuthorsAPA(authorField) {
@@ -113,7 +143,7 @@ function formatAPA(entry) {
   }
 
   const doiLink = f.doi
-    ? `<a class="pub-link" href="https://doi.org/${f.doi}" target="_blank" rel="noopener">DOI &rarr;</a>`
+    ? `<a class="pub-link" href="https://doi.org/${f.doi}" target="_blank" rel="noopener">DOI ↗</a>`
     : '';
 
   const typeLabel = { article: 'Journal Article', inproceedings: 'Conference Paper', incollection: 'Book Chapter' }[entry.type] || entry.type;
