@@ -134,10 +134,11 @@ function formatAPA(entry) {
     const booktitle = f.booktitle || '';
     const pages = f.pages ? ` (pp. ${f.pages.replace('--', '–')})` : '';
     rest = `In <i>${booktitle}</i>${pages}.`;
-  } else if (entry.type === 'incollection') {
-    const publisher = f.publisher || '';
+  } else if (entry.type === 'incollection' || entry.type === 'book') {
+    const booktitle = f.bookTitle || f.booktitle || '';
     const pages = f.pages ? ` (pp. ${f.pages.replace('--', '–')})` : '';
-    rest = `${publisher}${pages}.`;
+    const publisher = f.publisher ? `, ${f.publisher}` : '';
+    rest = `In <i>${booktitle}</i>${pages}${publisher}.`;
   } else {
     rest = f.journal || f.booktitle || f.publisher || '';
   }
@@ -146,7 +147,7 @@ function formatAPA(entry) {
     ? `<a class="pub-link" href="https://doi.org/${f.doi}" target="_blank" rel="noopener">DOI ↗</a>`
     : '';
 
-  const typeLabel = { article: 'Journal Article', inproceedings: 'Conference Paper', incollection: 'Book Chapter' }[entry.type] || entry.type;
+  const typeLabel = { article: 'Journal Article', inproceedings: 'Conference Paper', incollection: 'Book Chapter', book: 'Book Chapter' }[entry.type] || entry.type;
 
   return `
     <div class="pub-type">${typeLabel}</div>
@@ -169,9 +170,15 @@ function render() {
     return yb - ya;
   });
 
-  const filtered = CURRENT_FILTER === 'all'
-    ? sorted
-    : sorted.filter(e => e.type === CURRENT_FILTER);
+  let filtered = sorted;
+  if (CURRENT_FILTER !== 'all') {
+    if (CURRENT_FILTER === 'incollection') {
+      // Include both incollection and book entries for "Books & Chapters"
+      filtered = sorted.filter(e => e.type === 'incollection' || e.type === 'book');
+    } else {
+      filtered = sorted.filter(e => e.type === CURRENT_FILTER);
+    }
+  }
 
   if (filtered.length === 0) {
     list.innerHTML = '<li class="pub-empty">No publications in this category.</li>';
